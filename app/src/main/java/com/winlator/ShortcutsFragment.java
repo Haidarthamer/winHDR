@@ -30,8 +30,24 @@ import com.winlator.core.ArrayUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
+    private final boolean gamesOnly;
+    private String searchQuery = "";
+
+    public ShortcutsFragment() {
+        this(false);
+    }
+
+    public ShortcutsFragment(boolean gamesOnly) {
+        this.gamesOnly = gamesOnly;
+    }
+
+    public void setSearchQuery(String query) {
+        searchQuery = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
+        if (isAdded() && recyclerView != null) refreshContent();
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +60,19 @@ public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
 
         Shortcut selectedFolder = !folderStack.isEmpty() ? folderStack.peek() : null;
         ArrayList<Shortcut> shortcuts = manager.loadShortcuts(selectedFolder);
+        if (gamesOnly) shortcuts.removeIf(shortcut -> shortcut.file.isDirectory());
+        if (!searchQuery.isEmpty()) {
+            shortcuts.removeIf(shortcut ->
+                    !shortcut.name.toLowerCase(Locale.ROOT).contains(searchQuery)
+                    && !shortcut.container.getName().toLowerCase(Locale.ROOT).contains(searchQuery));
+        }
         recyclerView.setAdapter(new ShortcutsAdapter(shortcuts));
         emptyTextView.setVisibility(shortcuts.isEmpty() ? View.VISIBLE : View.GONE);
+        if (shortcuts.isEmpty() && emptyTextView != null) {
+            emptyTextView.setText(searchQuery.isEmpty()
+                    ? (gamesOnly ? "No launchable games or apps yet" : "No shortcuts yet")
+                    : "No matching shortcuts");
+        }
     }
 
     @Override
@@ -115,7 +142,7 @@ public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
 
     @Override
     protected String getHomeTitle() {
-        return getString(R.string.shortcuts);
+        return gamesOnly ? "Games" : "Library";
     }
 
     private class ShortcutsAdapter extends RecyclerView.Adapter<ShortcutsAdapter.ViewHolder> {
