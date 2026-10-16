@@ -58,7 +58,7 @@ public class ContainersFragment extends Fragment {
 
         View runButton = view.findViewById(R.id.BTDetailRun);
         if (runButton != null) runButton.setOnClickListener(v -> {
-            if (selectedContainer != null) runContainer(selectedContainer);
+            if (selectedContainer != null) launchSelectedContainer(selectedContainer);
         });
         View filesButton = view.findViewById(R.id.BTDetailFiles);
         if (filesButton != null) filesButton.setOnClickListener(v -> {
@@ -127,6 +127,12 @@ public class ContainersFragment extends Fragment {
         else {
             ((MainActivity) requireActivity()).showFragment(new ContainerDetailFragment(container.id));
         }
+    }
+
+    private void launchSelectedContainer(Container container) {
+        Intent intent = new Intent(getActivity(), XServerDisplayActivity.class);
+        intent.putExtra("container_id", container.id);
+        startActivity(intent);
     }
 
     private void createNewContainer() {
