@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/winhdr_home_card"
     android:orientation="horizontal"
     android:paddingStart="14dp"
@@ -15,11 +15,11 @@
 
     <ImageView
         android:id="@+id/ImageView"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:layout_marginEnd="12dp"
-        android:padding="8dp"
-        android:background="#142B40"
+        android:padding="9dp"
+        android:background="#102B43"
         app:tint="#55DDF5" />
 
     <TextView
@@ -31,7 +31,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="#F4F8FF"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -45,7 +45,7 @@
             android:id="@+id/BTRun"
             android:layout_marginEnd="4dp"
             android:src="@drawable/icon_run"
-            android:backgroundTint="#173849" />
+            android:backgroundTint="#123B55" />
 
         <ImageView
             style="@style/RightSideButton"
