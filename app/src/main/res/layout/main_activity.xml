@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:id="@+id/Toolbar"
+            android:background="#102237"
+            app:titleTextColor="#F4F8FF"
             app:layout_scrollFlags="enterAlways|scroll"
             app:title="@string/app_name" />
 
