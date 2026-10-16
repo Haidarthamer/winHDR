@@ -159,8 +159,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 BaseFileManagerFragment fileManagerFragment = (BaseFileManagerFragment)currentFragment;
                 if (fileManagerFragment.onBackPressed()) return;
             }
-            else if (currentFragment instanceof ContainersFragment) {
+            else if (currentFragment instanceof ContainersFragment && !permanentNavigation) {
                 finish();
+                return;
             }
         }
 
@@ -278,5 +279,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (!permanentNavigation) drawerLayout.closeDrawer(GravityCompat.START);
         currentFragment = fragment;
+        NavigationView navigationView = findViewById(R.id.NavigationView);
+        if (navigationView != null) {
+            int selectedId = 0;
+            if (fragment instanceof WinHDRHomeFragment) selectedId = R.id.menu_item_home;
+            else if (fragment instanceof ShortcutsFragment) {
+                selectedId = ((ShortcutsFragment) fragment).isGamesOnly()
+                        ? R.id.menu_item_games : R.id.menu_item_shortcuts;
+            }
+            else if (fragment instanceof ContainerFileManagerFragment) selectedId = R.id.menu_item_desktop;
+            else if (fragment instanceof ContainersFragment || fragment instanceof ContainerDetailFragment)
+                selectedId = R.id.menu_item_containers;
+            else if (fragment instanceof InputControlsFragment) selectedId = R.id.menu_item_input_controls;
+            else if (fragment instanceof SettingsFragment) selectedId = R.id.menu_item_settings;
+            if (selectedId != 0) navigationView.setCheckedItem(selectedId);
+        }
     }
 }
