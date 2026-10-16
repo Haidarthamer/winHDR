@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#050B15"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIBRARY  /  DETAILS"
+            android:textColor="#68A9FF"
+            android:textSize="10sp"
+            android:letterSpacing="0.14"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/winhdr_game_card"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <ImageView
+                android:id="@+id/IVShortcutIcon"
+                android:layout_width="148dp"
+                android:layout_height="148dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="20dp"
+                android:background="#10233B"
+                android:scaleType="fitCenter"
+                android:contentDescription="Application icon" />
+
+            <TextView
+                android:id="@+id/TVShortcutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:textColor="#F1F6FF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/TVShortcutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#8EA5C4"
+                android:textSize="13sp"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BTPlayShortcut"
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:backgroundTint="#1C63B9"
+                    android:text="Play"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/BTOpenFolder"
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="#14263D"
+                    android:text="Open folder"
+                    android:textAllCaps="false"
+                    android:textColor="#DBE7F7" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/winhdr_game_card"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APPLICATION DETAILS"
+                android:textColor="#68A9FF"
+                android:textSize="10sp"
+                android:letterSpacing="0.12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/TVShortcutKind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="#E8F0FC"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/TVShortcutPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:textColor="#8EA5C4"
+                android:textSize="12sp"
+                android:breakStrategy="simple" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/BTBackLibrary"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#102137"
+            android:text="← Back to library"
+            android:textAllCaps="false"
+            android:textColor="#DDE8F8" />
+    </LinearLayout>
+</ScrollView>
