@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#08111F"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
 
     <androidx.recyclerview.widget.RecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager" />
 
-    <TextView
-        android:id="@+id/TVEmptyText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="@string/no_items_to_display"
-        android:textSize="24sp"
-        android:visibility="gone" />
+        android:padding="28dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR WINDOWS WORKSPACES"
+            android:textColor="#55DDF5"
+            android:textSize="11sp"
+            android:letterSpacing="0.12"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TVEmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/no_items_to_display"
+            android:textColor="#9FB2C9"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
 </FrameLayout>
