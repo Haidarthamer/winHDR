@@ -20,6 +20,25 @@
             android:paddingTop="18dp"
             android:paddingBottom="28dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SYSTEM TUNING"
+                android:textColor="#55DDF5"
+                android:textSize="11sp"
+                android:letterSpacing="0.14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="18dp"
+                android:text="Settings"
+                android:textColor="#F4F8FF"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
