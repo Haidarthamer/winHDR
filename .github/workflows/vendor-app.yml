@@ -20,7 +20,7 @@ jobs:
           submodules: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Vendor pinned app source and apply native UI
+      - name: Vendor pinned app source and integrate native UI
         shell: bash
         run: |
           set -euo pipefail
@@ -61,16 +61,67 @@ jobs:
                   p.write_text(result)
               else:
                   p.unlink()
-          PY
 
-          patch="arena-native-ui/WinHDR-native-android-ui.patch"
-          test -f "$patch"
-          (cd app/app && git apply --check "../../$patch")
-          (cd app/app && git apply "../../$patch")
-          test -f app/app/src/main/java/com/winlator/WinHDRHomeFragment.java
-          test -f app/app/src/main/res/layout/fragment_winhdr_home.xml
-          grep -q 'menu_item_home' app/app/src/main/res/menu/main_menu.xml
-          grep -q 'WinHDRHomeFragment' app/app/src/main/java/com/winlator/MainActivity.java
+          # Apply new UI files from the patch without relying on fragile hunk context.
+          patch = Path("arena-native-ui/WinHDR-native-android-ui.patch").read_text()
+          sections = patch.split("diff --git ")[1:]
+          for section in sections:
+              lines = section.splitlines()
+              if "new file mode" not in section:
+                  continue
+              dest_line = next((line for line in lines if line.startswith("+++ b/")), None)
+              if not dest_line:
+                  raise SystemExit("New UI patch section is missing destination path")
+              rel = dest_line[len("+++ b/"):]
+              target = Path("app/app") / rel
+              target.parent.mkdir(parents=True, exist_ok=True)
+              content_lines = []
+              in_hunk = False
+              for line in lines:
+                  if line.startswith("@@"):
+                      in_hunk = True
+                      continue
+                  if in_hunk and line.startswith("+") and not line.startswith("+++"):
+                      content_lines.append(line[1:])
+                  elif in_hunk and line.startswith("\\"):
+                      continue
+              target.write_text("\n".join(content_lines) + "\n")
+
+          main = Path("app/app/src/main/java/com/winlator/MainActivity.java")
+          source = main.read_text()
+          old = "int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : (showShortcutsFirst ? R.id.menu_item_shortcuts : R.id.menu_item_containers);"
+          if "R.id.menu_item_home;" not in source:
+              if old not in source:
+                  raise SystemExit("Could not locate default navigation selection in MainActivity.java")
+              source = source.replace(old, "int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_home;", 1)
+          if "case R.id.menu_item_home:" not in source:
+              marker = "        switch (item.getItemId()) {"
+              if marker not in source:
+                  raise SystemExit("Could not locate navigation switch in MainActivity.java")
+              source = source.replace(marker, marker + "\n            case R.id.menu_item_home:\n                showFragment(new WinHDRHomeFragment());\n                break;", 1)
+          main.write_text(source)
+
+          menu = Path("app/app/src/main/res/menu/main_menu.xml")
+          menu_text = menu.read_text()
+          if "menu_item_home" not in menu_text:
+              marker = '    <group android:checkableBehavior="single">'
+              if marker not in menu_text:
+                  raise SystemExit("Could not locate navigation menu group")
+              menu_text = menu_text.replace(marker, marker + '\n        <item android:icon="@drawable/icon_container" android:id="@+id/menu_item_home" android:title="WinHDR Home" />', 1)
+          menu.write_text(menu_text)
+
+          required = [
+              Path("app/app/src/main/java/com/winlator/WinHDRHomeFragment.java"),
+              Path("app/app/src/main/res/layout/fragment_winhdr_home.xml"),
+              Path("app/app/src/main/res/drawable/winhdr_home_card.xml"),
+          ]
+          for path in required:
+              if not path.is_file():
+                  raise SystemExit(f"Missing UI file after integration: {path}")
+          if "WinHDRHomeFragment" not in main.read_text() or "menu_item_home" not in menu.read_text():
+              raise SystemExit("UI navigation integration verification failed")
+          print("Native UI files and navigation integrated.")
+          PY
 
           if git ls-files --stage app | grep -q '^160000 '; then
             echo "ERROR: app is still indexed as a submodule." >&2
