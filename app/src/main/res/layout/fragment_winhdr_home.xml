@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#08111F"
+    android:background="#050B15"
     android:fillViewport="true"
     android:clipToPadding="false">
 
@@ -10,14 +10,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="22dp"
-        android:paddingBottom="28dp">
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="26dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR WINDOWS LIBRARY"
+            android:textColor="#68A9FF"
+            android:textSize="10sp"
+            android:letterSpacing="0.14"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Ready to play"
+            android:textColor="#F1F6FF"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Launch installed Windows apps, manage your containers, and tune your controls."
+            android:textColor="#8195B2"
+            android:textSize="13sp"
+            android:lineSpacingExtra="2dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -25,149 +53,159 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="WINHDR  /  GAMING ENVIRONMENT"
-                android:textColor="#55DDF5"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
+                android:text="Quick launch"
+                android:textColor="#F1F6FF"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/btnHomeSeeAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/winhdr_home_card"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:text="ARM64"
-                android:textColor="#55DDF5"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                android:padding="7dp"
+                android:text="See all  →"
+                android:textColor="#69A7FF"
+                android:textSize="12sp"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Your games.\nYour rules."
-            android:textColor="#F4F8FF"
-            android:textSize="34sp"
-            android:lineSpacingExtra="1dp"
-            android:textStyle="bold" />
-
-        <TextView
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="A focused control center for your Windows game containers on Android."
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/llHomeContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/TVHomeEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/winhdr_home_card"
+            android:padding="18dp"
+            android:text="Your shortcut library is empty. Create a container and install or add a Windows app to get started."
             android:textColor="#9FB2C9"
-            android:textSize="14sp"
-            android:lineSpacingExtra="3dp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/winhdr_home_card"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_marginTop="22dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Recently updated"
+                android:textColor="#F1F6FF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="START HERE"
-                android:textColor="#55DDF5"
-                android:textSize="11sp"
-                android:letterSpacing="0.14"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:text="Your Windows workspace"
-                android:textColor="#F4F8FF"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Create or open a container to install and run compatible apps and games."
-                android:textColor="#9FB2C9"
-                android:textSize="13sp"
-                android:lineSpacingExtra="2dp" />
-
-            <Button
-                android:id="@+id/btnHomeContainers"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginTop="18dp"
-                android:backgroundTint="#55DDF5"
-                android:text="OPEN CONTAINERS   →"
-                android:textColor="#07111D"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:text="Shortcuts"
+                android:textColor="#8195B2"
+                android:textSize="11sp" />
         </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/llHomeRecentlyAdded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="QUICK ACCESS"
-            android:textColor="#F4F8FF"
-            android:textSize="12sp"
-            android:letterSpacing="0.12"
+            android:layout_marginTop="24dp"
+            android:text="WORKSPACES"
+            android:textColor="#68A9FF"
+            android:textSize="10sp"
+            android:letterSpacing="0.14"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnHomeGames"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="#102237"
-            android:gravity="start|center_vertical"
-            android:paddingStart="18dp"
-            android:text="🎮    GAME LIBRARY"
-            android:textColor="#F4F8FF"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnHomeControls"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#102237"
-            android:gravity="start|center_vertical"
-            android:paddingStart="18dp"
-            android:text="⌨    CONTROLS &amp; MAPPING"
-            android:textColor="#F4F8FF"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnHomeSettings"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#102237"
-            android:gravity="start|center_vertical"
-            android:paddingStart="18dp"
-            android:text="⚙    PERFORMANCE &amp; SETTINGS"
-            android:textColor="#F4F8FF"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:gravity="center"
-            android:text="WINHDR  •  POWERED BY WINLATOR"
-            android:textColor="#60758D"
-            android:textSize="10sp"
-            android:letterSpacing="0.08" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnHomeContainers"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="7dp"
+                android:backgroundTint="#174783"
+                android:text="Containers"
+                android:textColor="#F1F6FF"
+                android:textSize="12sp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnHomeGames"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="7dp"
+                android:backgroundTint="#102137"
+                android:text="Game library"
+                android:textColor="#DDE8F8"
+                android:textSize="12sp"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnHomeControls"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="7dp"
+                android:backgroundTint="#102137"
+                android:text="Controls"
+                android:textColor="#DDE8F8"
+                android:textSize="12sp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnHomeSettings"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="7dp"
+                android:backgroundTint="#102137"
+                android:text="Settings"
+                android:textColor="#DDE8F8"
+                android:textSize="12sp"
+                android:textAllCaps="false" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
