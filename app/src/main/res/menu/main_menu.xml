@@ -1,41 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/menu_item_home"
-            android:icon="@drawable/icon_container"
-            android:title="Home" />
-        <item
-            android:id="@+id/menu_item_shortcuts"
-            android:icon="@drawable/icon_shortcut"
-            android:title="Library" />
-        <item
-            android:id="@+id/menu_item_games"
-            android:icon="@drawable/icon_run"
-            android:title="Games" />
-        <item
-            android:id="@+id/menu_item_desktop"
-            android:icon="@drawable/icon_container"
-            android:title="Desktop" />
-        <item
-            android:id="@+id/menu_item_containers"
-            android:icon="@drawable/icon_container"
-            android:title="@string/containers" />
-        <item
-            android:id="@+id/menu_item_input_controls"
-            android:icon="@drawable/icon_input_controls"
-            android:title="Controls" />
-        <item
-            android:id="@+id/menu_item_settings"
-            android:icon="@drawable/icon_settings"
-            android:title="@string/settings" />
+        <item android:id="@+id/menu_item_home" android:icon="@drawable/icon_container" android:title="Home" />
+        <item android:id="@+id/menu_item_shortcuts" android:icon="@drawable/icon_shortcut" android:title="Library" />
+        <item android:id="@+id/menu_item_games" android:icon="@drawable/icon_run" android:title="Games" />
+        <item android:id="@+id/menu_item_desktop" android:icon="@drawable/icon_container" android:title="Desktop" />
+        <item android:id="@+id/menu_item_containers" android:icon="@drawable/icon_container" android:title="@string/containers" />
+        <item android:id="@+id/menu_item_input_controls" android:icon="@drawable/icon_input_controls" android:title="Controls" />
+        <item android:id="@+id/menu_item_settings" android:icon="@drawable/icon_settings" android:title="@string/settings" />
     </group>
-    <item android:title="">
-        <menu>
-            <item
-                android:id="@+id/menu_item_about"
-                android:icon="@drawable/icon_about"
-                android:title="@string/about" />
-        </menu>
-    </item>
+    <group android:checkableBehavior="none">
+        <item android:id="@+id/menu_item_about" android:icon="@drawable/icon_about" android:title="@string/about" />
+    </group>
 </menu>
