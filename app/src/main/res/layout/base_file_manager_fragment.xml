@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#08111F"
+    android:paddingTop="8dp">
 
     <androidx.recyclerview.widget.RecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,15 +19,18 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/no_items_to_display"
-        android:textSize="24sp"
+        android:textSize="15sp"
+        android:textColor="#9FB2C9"
+        android:padding="28dp"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/BTPaste"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:tint="#ffffff"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="#55DDF5"
+        android:tint="#07111D"
         android:src="@drawable/icon_paste"
         android:layout_margin="16dp"
         android:visibility="gone" />
