@@ -68,8 +68,8 @@ jobs:
 
           patch="arena-native-ui/WinHDR-native-android-ui.patch"
           if [[ -f "$patch" ]]; then
-            if (cd app/app && git apply --check "../../$patch"); then
-              (cd app/app && git apply "../../$patch")
+            if git apply --check --directory=app/app "$patch"; then
+              git apply --directory=app/app "$patch"
               echo "Native UI patch applied successfully."
             else
               echo "::warning::Native UI patch did not apply cleanly; vendoring will continue and the patch will be preserved for manual resolution."
@@ -103,8 +103,8 @@ jobs:
         continue-on-error: true
         working-directory: app
         run: |
-          if [[ -x ./gradlew ]]; then
-            ./gradlew --no-daemon assembleDebug
+          if [[ -f ./gradlew ]]; then
+            bash ./gradlew --no-daemon assembleDebug
           else
             echo "No Gradle wrapper found in app/" >&2
             exit 1
