@@ -155,6 +155,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         if (currentFragment != null && currentFragment.isVisible()) {
+            if (currentFragment instanceof ShortcutDetailsFragment) {
+                showFragment(new ShortcutsFragment(false));
+                return;
+            }
             if (currentFragment instanceof BaseFileManagerFragment) {
                 BaseFileManagerFragment fileManagerFragment = (BaseFileManagerFragment)currentFragment;
                 if (fileManagerFragment.onBackPressed()) return;
