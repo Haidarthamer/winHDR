@@ -89,21 +89,12 @@
                 android:padding="28dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NO WORKSPACES YET"
-                    android:textColor="#68A9FF"
-                    android:textSize="11sp"
-                    android:letterSpacing="0.12"
-                    android:textStyle="bold" />
-
-                <TextView
                     android:id="@+id/TVEmptyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/no_items_to_display"
+                    android:text="No Windows containers yet. Tap + Create to make your first workspace."
                     android:textColor="#9FB2C9"
                     android:textSize="14sp"
                     android:visibility="gone" />
