@@ -21,14 +21,30 @@ import com.winlator.container.Shortcut;
 import java.io.File;
 
 public class ShortcutDetailsFragment extends Fragment {
-    private final int containerId;
-    private final String shortcutPath;
+    private int containerId;
+    private String shortcutPath;
     private Container container;
     private Shortcut shortcut;
+
+    public ShortcutDetailsFragment() {
+    }
 
     public ShortcutDetailsFragment(int containerId, String shortcutPath) {
         this.containerId = containerId;
         this.shortcutPath = shortcutPath;
+        Bundle args = new Bundle();
+        args.putInt("container_id", containerId);
+        args.putString("shortcut_path", shortcutPath);
+        setArguments(args);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            containerId = getArguments().getInt("container_id", 0);
+            shortcutPath = getArguments().getString("shortcut_path");
+        }
     }
 
     @Nullable
