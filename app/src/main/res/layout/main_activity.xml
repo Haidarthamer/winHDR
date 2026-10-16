@@ -5,18 +5,21 @@
     android:id="@+id/DrawerLayout"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#08111F">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#08111F">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:id="@+id/Toolbar"
             android:background="#102237"
+            android:elevation="4dp"
             app:titleTextColor="#F4F8FF"
             app:layout_scrollFlags="enterAlways|scroll"
             app:title="@string/app_name" />
@@ -25,6 +28,7 @@
             android:id="@+id/FLFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#08111F"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </LinearLayout>
 
@@ -34,9 +38,10 @@
         android:layout_gravity="start"
         android:id="@+id/NavigationView"
         android:fitsSystemWindows="true"
+        android:background="#102237"
         app:headerLayout="@layout/main_menu_header"
-        app:itemIconTint="?attr/colorAccent"
-        app:itemTextColor="?attr/colorPrimaryText"
-        android:background="?attr/colorSecondarySurface"
+        app:itemIconTint="#55DDF5"
+        app:itemTextColor="#F4F8FF"
+        app:itemBackground="@drawable/winhdr_home_card"
         app:menu="@menu/main_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>
