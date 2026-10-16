@@ -5,52 +5,61 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:background="@drawable/winhdr_home_card"
+    android:background="@drawable/winhdr_game_card"
     android:orientation="horizontal"
-    android:paddingStart="14dp"
+    android:paddingStart="12dp"
     android:paddingEnd="10dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="11dp"
+    android:paddingBottom="11dp"
     android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/ImageView"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:layout_marginEnd="12dp"
         android:padding="9dp"
         android:background="#102B43"
-        app:tint="#55DDF5" />
-
-    <TextView
-        android:id="@+id/TVTitle"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="#F4F8FF"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        app:tint="#65A8FF" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
-        <ImageView
-            style="@style/LeftSideButton"
-            android:id="@+id/BTRun"
-            android:layout_marginEnd="4dp"
-            android:src="@drawable/icon_run"
-            android:backgroundTint="#123B55" />
+        <TextView
+            android:id="@+id/TVTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#F1F6FF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <ImageView
-            style="@style/RightSideButton"
-            android:id="@+id/BTMenu"
-            android:layout_marginStart="4dp"
-            android:src="@drawable/icon_list_item_menu" />
+        <TextView
+            android:id="@+id/TVSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#8195B2"
+            android:textSize="10sp" />
     </LinearLayout>
+
+    <ImageView
+        style="@style/LeftSideButton"
+        android:id="@+id/BTRun"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/icon_run"
+        android:backgroundTint="#123B55" />
+
+    <ImageView
+        style="@style/RightSideButton"
+        android:id="@+id/BTMenu"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/icon_list_item_menu" />
 </LinearLayout>
