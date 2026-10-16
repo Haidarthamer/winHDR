@@ -33,15 +33,17 @@ import java.util.List;
 import java.util.Locale;
 
 public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
-    private final boolean gamesOnly;
+    private boolean gamesOnly;
     private String searchQuery = "";
 
     public ShortcutsFragment() {
-        this(false);
     }
 
     public ShortcutsFragment(boolean gamesOnly) {
         this.gamesOnly = gamesOnly;
+        Bundle args = new Bundle();
+        args.putBoolean("games_only", gamesOnly);
+        setArguments(args);
     }
 
     public boolean isGamesOnly() {
