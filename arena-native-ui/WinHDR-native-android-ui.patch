@@ -23,7 +23,7 @@ diff --git a/src/main/java/com/winlator/MainActivity.java b/src/main/java/com/wi
 diff --git a/src/main/res/menu/main_menu.xml b/src/main/res/menu/main_menu.xml
 --- a/src/main/res/menu/main_menu.xml
 +++ b/src/main/res/menu/main_menu.xml
-@@ -3,6 +3,7 @@
+@@ -3,9 +3,10 @@
    xmlns:android="http://schemas.android.com/apk/res/android">
      <group android:checkableBehavior="single">
 +        <item android:icon="@drawable/icon_container" android:id="@+id/menu_item_home" android:title="WinHDR Home" />
@@ -38,7 +38,7 @@ diff --git a/src/main/java/com/winlator/WinHDRHomeFragment.java b/src/main/java/
 new file mode 100644
 --- /dev/null
 +++ b/src/main/java/com/winlator/WinHDRHomeFragment.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,32 @@
 +package com.winlator;
 +
 +import android.os.Bundle;
@@ -75,7 +75,7 @@ diff --git a/src/main/res/layout/fragment_winhdr_home.xml b/src/main/res/layout/
 new file mode 100644
 --- /dev/null
 +++ b/src/main/res/layout/fragment_winhdr_home.xml
-@@ -0,0 +1,143 @@
+@@ -0,0 +1,133 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 +    android:layout_width="match_parent"
@@ -213,7 +213,7 @@ diff --git a/src/main/res/drawable/winhdr_home_card.xml b/src/main/res/drawable/
 new file mode 100644
 --- /dev/null
 +++ b/src/main/res/drawable/winhdr_home_card.xml
-@@ -0,0 +1,9 @@
+@@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
 +    <solid android:color="#102237" />
