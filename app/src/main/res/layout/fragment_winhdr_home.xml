@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#08111F"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WINHDR"
+            android:textColor="#55DDF5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.18" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Your PC games. On Android."
+            android:textColor="#F4F8FF"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Manage containers, launch Windows games, and tune your setup."
+            android:textColor="#A7B6CB"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/winhdr_home_card"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="READY WHEN YOU ARE"
+                android:textColor="#55DDF5"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Pick up where your setup begins."
+                android:textColor="#F4F8FF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnHomeContainers"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="18dp"
+                android:backgroundTint="#55DDF5"
+                android:text="OPEN CONTAINERS"
+                android:textColor="#07111D"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="QUICK ACCESS"
+            android:textColor="#F4F8FF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnHomeGames"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#14253A"
+                android:gravity="start|center_vertical"
+                android:paddingStart="18dp"
+                android:text="🎮   Game Library"
+                android:textColor="#F4F8FF" />
+
+            <Button
+                android:id="@+id/btnHomeControls"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#14253A"
+                android:gravity="start|center_vertical"
+                android:paddingStart="18dp"
+                android:text="⌨   Controls &amp; Mapping"
+                android:textColor="#F4F8FF" />
+
+            <Button
+                android:id="@+id/btnHomeSettings"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:backgroundTint="#14253A"
+                android:gravity="start|center_vertical"
+                android:paddingStart="18dp"
+                android:text="⚙   Performance &amp; Settings"
+                android:textColor="#F4F8FF" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="WINHDR  •  POWERED BY WINLATOR"
+            android:textColor="#63758D"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>
