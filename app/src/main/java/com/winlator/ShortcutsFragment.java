@@ -198,7 +198,12 @@ public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
             }
             else holder.runButton.setImageResource(R.drawable.icon_run);
 
-            holder.imageView.setOnClickListener((v) -> runFromShortcut(item));
+            holder.imageView.setOnClickListener((v) ->
+                    ((MainActivity) requireActivity()).showFragment(
+                            new ShortcutDetailsFragment(item.container.id, item.file.getPath())));
+            holder.itemView.setOnClickListener((v) ->
+                    ((MainActivity) requireActivity()).showFragment(
+                            new ShortcutDetailsFragment(item.container.id, item.file.getPath())));
             holder.runButton.setOnClickListener((v) -> runFromShortcut(item));
             holder.menuButton.setOnClickListener((v) -> showListItemMenu(v, item));
         }
