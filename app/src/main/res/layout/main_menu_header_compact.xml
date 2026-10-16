@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingEnd="8dp"
+    android:background="#060D19">
+
+    <ImageView
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:src="@drawable/icon_container"
+        android:contentDescription="WinHDR"
+        android:tint="#60A5FA" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="7dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WinHDR"
+            android:textColor="#F1F6FF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Windows Emulator"
+            android:textColor="#8398B5"
+            android:textSize="8sp"
+            android:maxLines="1" />
+    </LinearLayout>
+</LinearLayout>
