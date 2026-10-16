@@ -15,6 +15,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,11 +27,15 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.winlator.contentdialog.AboutDialog;
+import com.winlator.container.Container;
+import com.winlator.container.ContainerManager;
 import com.winlator.core.AppUtils;
 import com.winlator.core.Callback;
 import com.winlator.core.LocaleHelper;
 import com.winlator.core.PreloaderDialog;
 import com.winlator.xenvironment.RootFSInstaller;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final boolean DEBUG_MODE = false; // FIXME change to false
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final byte EDIT_INPUT_CONTROLS_REQUEST_CODE = 3;
     public static final byte OPEN_DIRECTORY_REQUEST_CODE = 4;
     private DrawerLayout drawerLayout;
+    private boolean permanentNavigation = false;
     public final PreloaderDialog preloaderDialog = new PreloaderDialog(this);
     private boolean editInputControls = false;
     private int selectedProfileId;
@@ -54,12 +60,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.main_activity);
 
         drawerLayout = findViewById(R.id.DrawerLayout);
+        permanentNavigation = findViewById(R.id.PermanentNavigationRoot) != null;
         NavigationView navigationView = findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
         setSupportActionBar(findViewById(R.id.Toolbar));
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(!permanentNavigation);
+        actionBar.setDisplayShowTitleEnabled(!permanentNavigation);
+
+        SearchView globalSearch = findViewById(R.id.GlobalSearch);
+        if (globalSearch != null) {
+            globalSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override public boolean onQueryTextSubmit(String query) {
+                    applyGlobalSearch(query);
+                    return true;
+                }
+                @Override public boolean onQueryTextChange(String newText) {
+                    applyGlobalSearch(newText);
+                    return true;
+                }
+            });
+        }
+        View topControls = findViewById(R.id.btnTopControls);
+        if (topControls != null) topControls.setOnClickListener(v -> showFragment(new InputControlsFragment(0)));
+        View topSettings = findViewById(R.id.btnTopSettings);
+        if (topSettings != null) topSettings.setOnClickListener(v -> showFragment(new SettingsFragment()));
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -67,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editInputControls = intent.getBooleanExtra("edit_input_controls", false);
         if (editInputControls) {
             selectedProfileId = intent.getIntExtra("selected_profile_id", 0);
-            actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_back);
+            if (!permanentNavigation) actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_back);
             onNavigationItemSelected(navigationView.getMenu().findItem(R.id.menu_item_input_controls));
             navigationView.setCheckedItem(R.id.menu_item_input_controls);
         }
@@ -76,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             int selectedMenuItemId = intent.getIntExtra("selected_menu_item_id", 0);
             int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_home;
 
-            actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_menu);
+            if (!permanentNavigation) actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_menu);
             onNavigationItemSelected(navigationView.getMenu().findItem(menuItemId));
             navigationView.setCheckedItem(menuItemId);
             if (!requestAppPermissions()) RootFSInstaller.installIfNeeded(this);
@@ -137,7 +163,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        showFragment(new ContainersFragment());
+        if (permanentNavigation) {
+            showFragment(new WinHDRHomeFragment());
+            NavigationView nav = findViewById(R.id.NavigationView);
+            if (nav != null) nav.setCheckedItem(R.id.menu_item_home);
+        }
+        else showFragment(new ContainersFragment());
+    }
+
+    private void applyGlobalSearch(String query) {
+        if (currentFragment instanceof ShortcutsFragment) {
+            ((ShortcutsFragment) currentFragment).setSearchQuery(query);
+        }
+        else if (currentFragment instanceof WinHDRHomeFragment) {
+            ((WinHDRHomeFragment) currentFragment).setSearchQuery(query);
+        }
+    }
+
+    private void openDesktop() {
+        ContainerManager manager = new ContainerManager(this);
+        if (manager.getContainers().isEmpty()) {
+            showFragment(new ContainersFragment());
+            return;
+        }
+        Container container = manager.getContainers().get(0);
+        File desktop = new File(container.getUserDir(), "Desktop");
+        if (!desktop.exists()) desktop.mkdirs();
+        showFragment(new ContainerFileManagerFragment(container.id, desktop.getAbsolutePath()));
     }
 
     public void setOpenFileCallback(Callback<Uri> openFileCallback) {
@@ -172,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     BaseFileManagerFragment fileManagerFragment = (BaseFileManagerFragment)currentFragment;
                     if (fileManagerFragment.onOptionsMenuClicked()) return true;
                 }
-                drawerLayout.openDrawer(GravityCompat.START);
+                if (!permanentNavigation) drawerLayout.openDrawer(GravityCompat.START);
             }
             return true;
         }
@@ -191,7 +243,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_item_shortcuts:
                 preferences.edit().putBoolean("show_shortcuts_first", true).apply();
-                showFragment(new ShortcutsFragment());
+                showFragment(new ShortcutsFragment(false));
+                break;
+            case R.id.menu_item_games:
+                preferences.edit().putBoolean("show_shortcuts_first", true).apply();
+                showFragment(new ShortcutsFragment(true));
+                break;
+            case R.id.menu_item_desktop:
+                openDesktop();
                 break;
             case R.id.menu_item_containers:
                 preferences.edit().putBoolean("show_shortcuts_first", false).apply();
@@ -216,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             .replace(R.id.FLFragmentContainer, fragment)
             .commit();
 
-        drawerLayout.closeDrawer(GravityCompat.START);
+        if (!permanentNavigation) drawerLayout.closeDrawer(GravityCompat.START);
         currentFragment = fragment;
     }
 }
