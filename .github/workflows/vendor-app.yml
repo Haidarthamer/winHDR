@@ -20,7 +20,7 @@ jobs:
           submodules: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Vendor the pinned app submodule and integrate native UI patch
+      - name: Vendor pinned app source and apply native UI
         shell: bash
         run: |
           set -euo pipefail
@@ -36,7 +36,6 @@ jobs:
           cp -a app/. "$tmp/"
           rm -rf "$tmp/.git"
           git checkout -B vendor-app-independent
-
           git rm --cached -f app
           rm -rf app
           mkdir app
@@ -47,10 +46,8 @@ jobs:
           from pathlib import Path
           p = Path(".gitmodules")
           if p.exists():
-              text = p.read_text()
-              lines = text.splitlines(keepends=True)
-              out = []
-              skip = False
+              lines = p.read_text().splitlines(keepends=True)
+              out, skip = [], False
               for line in lines:
                   if line.strip() == '[submodule "app"]':
                       skip = True
@@ -67,16 +64,13 @@ jobs:
           PY
 
           patch="arena-native-ui/WinHDR-native-android-ui.patch"
-          if [[ -f "$patch" ]]; then
-            if git apply --check --directory=app/app "$patch"; then
-              git apply --directory=app/app "$patch"
-              echo "Native UI patch applied successfully."
-            else
-              echo "::warning::Native UI patch did not apply cleanly; vendoring will continue and the patch will be preserved for manual resolution."
-            fi
-          else
-            echo "::warning::Native UI patch file was not found; vendoring will continue without UI integration."
-          fi
+          test -f "$patch"
+          (cd app/app && git apply --check "../../$patch")
+          (cd app/app && git apply "../../$patch")
+          test -f app/app/src/main/java/com/winlator/WinHDRHomeFragment.java
+          test -f app/app/src/main/res/layout/fragment_winhdr_home.xml
+          grep -q 'menu_item_home' app/app/src/main/res/menu/main_menu.xml
+          grep -q 'WinHDRHomeFragment' app/app/src/main/java/com/winlator/MainActivity.java
 
           if git ls-files --stage app | grep -q '^160000 '; then
             echo "ERROR: app is still indexed as a submodule." >&2
@@ -88,30 +82,30 @@ jobs:
           git commit -m "Vendor Winlator app source and integrate WinHDR native UI"
           git push --force origin HEAD:vendor-app-independent
 
-      - name: Verify normal tracked files
+      - name: Verify normal tracked files and UI
         run: |
+          set -euo pipefail
           git fetch origin vendor-app-independent
           git ls-tree origin/vendor-app-independent app
           if git ls-tree origin/vendor-app-independent app | grep -q 'commit '; then
             echo "ERROR: app is still a submodule." >&2
             exit 1
           fi
-          echo "app is tracked as a normal directory."
+          git show origin/vendor-app-independent:app/app/src/main/res/menu/main_menu.xml | grep -q 'menu_item_home'
+          git show origin/vendor-app-independent:app/app/src/main/java/com/winlator/WinHDRHomeFragment.java >/dev/null
+          echo "Vendored source and native UI verified."
 
       - name: Build Android debug APK
-        id: build
-        continue-on-error: true
         working-directory: app
         run: |
-          if [[ -f ./gradlew ]]; then
-            bash ./gradlew --no-daemon assembleDebug
-          else
-            echo "No Gradle wrapper found in app/" >&2
-            exit 1
-          fi
+          set -euo pipefail
+          test -f ./gradlew
+          bash ./gradlew --no-daemon assembleDebug
 
-      - name: Report build status
-        if: always()
-        run: |
-          echo "The vendored source branch is vendor-app-independent."
-          echo "Check this workflow's Build Android debug APK step for actual build status."
+      - name: Upload APK artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinHDR-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
