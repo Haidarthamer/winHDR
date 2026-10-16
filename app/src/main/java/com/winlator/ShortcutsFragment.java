@@ -44,6 +44,10 @@ public class ShortcutsFragment extends BaseFileManagerFragment<Shortcut> {
         this.gamesOnly = gamesOnly;
     }
 
+    public boolean isGamesOnly() {
+        return gamesOnly;
+    }
+
     public void setSearchQuery(String query) {
         searchQuery = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
         if (isAdded() && recyclerView != null) refreshContent();
