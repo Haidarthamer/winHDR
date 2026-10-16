@@ -1,0 +1,223 @@
+diff --git a/src/main/java/com/winlator/MainActivity.java b/src/main/java/com/winlator/MainActivity.java
+--- a/src/main/java/com/winlator/MainActivity.java
++++ b/src/main/java/com/winlator/MainActivity.java
+@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
+         else {
+             boolean showShortcutsFirst = preferences.getBoolean("show_shortcuts_first", false);
+             int selectedMenuItemId = intent.getIntExtra("selected_menu_item_id", 0);
+-            int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : (showShortcutsFirst ? R.id.menu_item_shortcuts : R.id.menu_item_containers);
++            int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_home;
+ 
+             actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_menu);
+             onNavigationItemSelected(navigationView.getMenu().findItem(menuItemId));
+@@ -190,6 +190,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
+         }
+ 
+         switch (item.getItemId()) {
++            case R.id.menu_item_home:
++                showFragment(new WinHDRHomeFragment());
++                break;
+             case R.id.menu_item_shortcuts:
+                 preferences.edit().putBoolean("show_shortcuts_first", true).apply();
+                 showFragment(new ShortcutsFragment());
+diff --git a/src/main/res/menu/main_menu.xml b/src/main/res/menu/main_menu.xml
+--- a/src/main/res/menu/main_menu.xml
++++ b/src/main/res/menu/main_menu.xml
+@@ -3,6 +3,7 @@
+   xmlns:android="http://schemas.android.com/apk/res/android">
+     <group android:checkableBehavior="single">
++        <item android:icon="@drawable/icon_container" android:id="@+id/menu_item_home" android:title="WinHDR Home" />
+         <item android:icon="@drawable/icon_shortcut" android:id="@+id/menu_item_shortcuts" android:title="@string/shortcuts" />
+         <item android:icon="@drawable/icon_container" android:id="@+id/menu_item_containers" android:title="@string/containers" />
+         <item android:icon="@drawable/icon_input_controls" android:id="@+id/menu_item_input_controls" android:title="@string/input_controls" />
+         <item android:icon="@drawable/icon_settings" android:id="@+id/menu_item_settings" android:title="@string/settings" />
+         <item android:icon="@drawable/icon_about" android:id="@+id/menu_item_about" android:title="@string/about" />
+     </group>
+ </menu>
+diff --git a/src/main/java/com/winlator/WinHDRHomeFragment.java b/src/main/java/com/winlator/WinHDRHomeFragment.java
+new file mode 100644
+--- /dev/null
++++ b/src/main/java/com/winlator/WinHDRHomeFragment.java
+@@ -0,0 +1,67 @@
++package com.winlator;
++
++import android.os.Bundle;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.fragment.app.Fragment;
++
++public class WinHDRHomeFragment extends Fragment {
++    @Nullable
++    @Override
++    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
++                             @Nullable Bundle savedInstanceState) {
++        return inflater.inflate(R.layout.fragment_winhdr_home, container, false);
++    }
++
++    @Override
++    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
++        super.onViewCreated(view, savedInstanceState);
++        view.findViewById(R.id.btnHomeContainers).setOnClickListener(v ->
++                ((MainActivity) requireActivity()).showFragment(new ContainersFragment()));
++        view.findViewById(R.id.btnHomeGames).setOnClickListener(v ->
++                ((MainActivity) requireActivity()).showFragment(new ShortcutsFragment()));
++        view.findViewById(R.id.btnHomeSettings).setOnClickListener(v ->
++                ((MainActivity) requireActivity()).showFragment(new SettingsFragment()));
++        view.findViewById(R.id.btnHomeControls).setOnClickListener(v ->
++                ((MainActivity) requireActivity()).showFragment(new InputControlsFragment(0)));
++    }
++}
+diff --git a/src/main/res/layout/fragment_winhdr_home.xml b/src/main/res/layout/fragment_winhdr_home.xml
+new file mode 100644
+--- /dev/null
++++ b/src/main/res/layout/fragment_winhdr_home.xml
+@@ -0,0 +1,143 @@
++<?xml version="1.0" encoding="utf-8"?>
++<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:background="#08111F"
++    android:fillViewport="true">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical"
++        android:padding="20dp">
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="WINHDR"
++            android:textColor="#55DDF5"
++            android:textSize="14sp"
++            android:textStyle="bold"
++            android:letterSpacing="0.18" />
++
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="8dp"
++            android:text="Your PC games. On Android."
++            android:textColor="#F4F8FF"
++            android:textSize="27sp"
++            android:textStyle="bold" />
++
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="8dp"
++            android:text="Manage containers, launch Windows games, and tune your setup."
++            android:textColor="#A7B6CB"
++            android:textSize="14sp" />
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="24dp"
++            android:background="@drawable/winhdr_home_card"
++            android:orientation="vertical"
++            android:padding="20dp">
++
++            <TextView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="READY WHEN YOU ARE"
++                android:textColor="#55DDF5"
++                android:textSize="11sp"
++                android:textStyle="bold" />
++
++            <TextView
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="8dp"
++                android:text="Pick up where your setup begins."
++                android:textColor="#F4F8FF"
++                android:textSize="20sp"
++                android:textStyle="bold" />
++
++            <Button
++                android:id="@+id/btnHomeContainers"
++                android:layout_width="match_parent"
++                android:layout_height="54dp"
++                android:layout_marginTop="18dp"
++                android:backgroundTint="#55DDF5"
++                android:text="OPEN CONTAINERS"
++                android:textColor="#07111D"
++                android:textStyle="bold" />
++        </LinearLayout>
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="28dp"
++            android:text="QUICK ACCESS"
++            android:textColor="#F4F8FF"
++            android:textSize="14sp"
++            android:textStyle="bold" />
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="12dp"
++            android:orientation="vertical">
++
++            <Button
++                android:id="@+id/btnHomeGames"
++                android:layout_width="match_parent"
++                android:layout_height="52dp"
++                android:layout_marginBottom="10dp"
++                android:backgroundTint="#14253A"
++                android:gravity="start|center_vertical"
++                android:paddingStart="18dp"
++                android:text="🎮   Game Library"
++                android:textColor="#F4F8FF" />
++
++            <Button
++                android:id="@+id/btnHomeControls"
++                android:layout_width="match_parent"
++                android:layout_height="52dp"
++                android:layout_marginBottom="10dp"
++                android:backgroundTint="#14253A"
++                android:gravity="start|center_vertical"
++                android:paddingStart="18dp"
++                android:text="⌨   Controls &amp; Mapping"
++                android:textColor="#F4F8FF" />
++
++            <Button
++                android:id="@+id/btnHomeSettings"
++                android:layout_width="match_parent"
++                android:layout_height="52dp"
++                android:backgroundTint="#14253A"
++                android:gravity="start|center_vertical"
++                android:paddingStart="18dp"
++                android:text="⚙   Performance &amp; Settings"
++                android:textColor="#F4F8FF" />
++        </LinearLayout>
++
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="24dp"
++            android:gravity="center"
++            android:text="WINHDR  •  POWERED BY WINLATOR"
++            android:textColor="#63758D"
++            android:textSize="11sp" />
++    </LinearLayout>
++</ScrollView>
+diff --git a/src/main/res/drawable/winhdr_home_card.xml b/src/main/res/drawable/winhdr_home_card.xml
+new file mode 100644
+--- /dev/null
++++ b/src/main/res/drawable/winhdr_home_card.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
++    <solid android:color="#102237" />
++    <corners android:radius="22dp" />
++    <stroke android:width="1dp" android:color="#25445B" />
++    <padding android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp" />
++</shape>
