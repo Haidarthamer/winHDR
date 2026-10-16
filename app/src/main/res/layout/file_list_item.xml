@@ -2,9 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@drawable/winhdr_home_card"
     android:gravity="center_vertical">
 
     <LinearLayout
@@ -18,11 +25,10 @@
 
         <ImageView
             android:id="@+id/ImageView"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -35,7 +41,7 @@
                 android:id="@+id/TVTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorPrimaryVariant"
+                android:textColor="#F4F8FF"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1" />
@@ -44,7 +50,7 @@
                 android:id="@+id/TVSubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorSecondaryText"
+                android:textColor="#9FB2C9"
                 android:ellipsize="end"
                 android:maxLines="1" />
         </LinearLayout>
