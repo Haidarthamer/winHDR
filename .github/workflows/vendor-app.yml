@@ -34,6 +34,7 @@ jobs:
 
           tmp="$(mktemp -d)"
           cp -a app/. "$tmp/"
+          rm -rf "$tmp/.git"
           git checkout -B vendor-app-independent
 
           git rm --cached -f app
@@ -67,8 +68,8 @@ jobs:
 
           patch="arena-native-ui/WinHDR-native-android-ui.patch"
           if [[ -f "$patch" ]]; then
-            if (cd app && git apply --check "../$patch"); then
-              (cd app && git apply "../$patch")
+            if (cd app/app && git apply --check "../../$patch"); then
+              (cd app/app && git apply "../../$patch")
               echo "Native UI patch applied successfully."
             else
               echo "::warning::Native UI patch did not apply cleanly; vendoring will continue and the patch will be preserved for manual resolution."
@@ -81,6 +82,8 @@ jobs:
             echo "ERROR: app is still indexed as a submodule." >&2
             exit 1
           fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A .gitmodules app
           git commit -m "Vendor Winlator app source and integrate WinHDR native UI"
           git push origin HEAD:vendor-app-independent
