@@ -41,6 +41,7 @@ public class ContainersFragment extends Fragment {
     private TextView emptyTextView;
     private ContainerManager manager;
     private PreloaderDialog preloaderDialog;
+    private Container selectedContainer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +54,28 @@ public class ContainersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         manager = new ContainerManager(getContext());
-        loadContainersList();
         view.findViewById(R.id.btnCreateContainer).setOnClickListener(v -> createNewContainer());
+
+        View runButton = view.findViewById(R.id.BTDetailRun);
+        if (runButton != null) runButton.setOnClickListener(v -> {
+            if (selectedContainer != null) runContainer(selectedContainer);
+        });
+        View filesButton = view.findViewById(R.id.BTDetailFiles);
+        if (filesButton != null) filesButton.setOnClickListener(v -> {
+            if (selectedContainer != null) ((MainActivity) requireActivity())
+                    .showFragment(new ContainerFileManagerFragment(selectedContainer.id));
+        });
+        View editButton = view.findViewById(R.id.BTDetailEdit);
+        if (editButton != null) editButton.setOnClickListener(v -> {
+            if (selectedContainer != null) ((MainActivity) requireActivity())
+                    .showFragment(new ContainerDetailFragment(selectedContainer.id));
+        });
+        View storageButton = view.findViewById(R.id.BTDetailStorage);
+        if (storageButton != null) storageButton.setOnClickListener(v -> {
+            if (selectedContainer != null) (new StorageInfoDialog((MainActivity) requireActivity(), selectedContainer)).show();
+        });
+
+        loadContainersList();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.containers);
     }
 
@@ -81,6 +102,31 @@ public class ContainersFragment extends Fragment {
             emptyTextView.setVisibility(View.VISIBLE);
         }
         else emptyTextView.setVisibility(View.GONE);
+        selectedContainer = containers.isEmpty() ? null : containers.get(0);
+        if (selectedContainer != null) updateContainerDetails(selectedContainer);
+    }
+
+    private void updateContainerDetails(Container container) {
+        selectedContainer = container;
+        View root = getView();
+        if (root == null) return;
+        TextView name = root.findViewById(R.id.TVSelectedContainerName);
+        TextView subtitle = root.findViewById(R.id.TVSelectedContainerSubtitle);
+        TextView path = root.findViewById(R.id.TVSelectedContainerPath);
+        if (name == null) return;
+        name.setText(container.getName());
+        subtitle.setText("Windows workspace  ·  ID " + container.id);
+        if (path != null) path.setText(container.getUserDir().getAbsolutePath());
+    }
+
+    private void onContainerClicked(Container container) {
+        View root = getView();
+        if (root != null && root.findViewById(R.id.TVSelectedContainerName) != null) {
+            updateContainerDetails(container);
+        }
+        else {
+            ((MainActivity) requireActivity()).showFragment(new ContainerDetailFragment(container.id));
+        }
     }
 
     private void createNewContainer() {
@@ -141,6 +187,7 @@ public class ContainersFragment extends Fragment {
             holder.imageView.setImageResource(R.drawable.icon_container);
             holder.title.setText(item.getName());
             holder.subtitle.setText("Windows workspace  ·  ID " + item.id);
+            holder.itemView.setOnClickListener(v -> onContainerClicked(item));
             holder.runButton.setOnClickListener((view) -> runContainer(item));
             holder.menuButton.setOnClickListener((view) -> showListItemMenu(view, item));
         }
