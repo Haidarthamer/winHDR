@@ -54,6 +54,7 @@ public class ContainersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         manager = new ContainerManager(getContext());
         loadContainersList();
+        view.findViewById(R.id.btnCreateContainer).setOnClickListener(v -> createNewContainer());
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.containers);
     }
 
@@ -75,7 +76,20 @@ public class ContainersFragment extends Fragment {
     private void loadContainersList() {
         ArrayList<Container> containers = manager.getContainers();
         recyclerView.setAdapter(new ContainersAdapter(containers));
-        if (containers.isEmpty()) emptyTextView.setVisibility(View.VISIBLE);
+        if (containers.isEmpty()) {
+            emptyTextView.setText("No Windows containers yet. Tap + Create to make your first workspace.");
+            emptyTextView.setVisibility(View.VISIBLE);
+        }
+        else emptyTextView.setVisibility(View.GONE);
+    }
+
+    private void createNewContainer() {
+        if (!RootFS.find(getContext()).isValid()) return;
+        FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.FLFragmentContainer, new ContainerDetailFragment())
+            .commit();
     }
 
     @Override
@@ -86,12 +100,7 @@ public class ContainersFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_item_add) {
-            if (!RootFS.find(getContext()).isValid()) return false;
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.FLFragmentContainer, new ContainerDetailFragment())
-                .commit();
+            createNewContainer();
             return true;
         }
         else return super.onOptionsItemSelected(menuItem);
@@ -105,11 +114,13 @@ public class ContainersFragment extends Fragment {
             private final ImageView menuButton;
             private final ImageView imageView;
             private final TextView title;
+            private final TextView subtitle;
 
             private ViewHolder(View view) {
                 super(view);
                 this.imageView = view.findViewById(R.id.ImageView);
                 this.title = view.findViewById(R.id.TVTitle);
+                this.subtitle = view.findViewById(R.id.TVSubtitle);
                 this.runButton = view.findViewById(R.id.BTRun);
                 this.menuButton = view.findViewById(R.id.BTMenu);
             }
@@ -129,6 +140,7 @@ public class ContainersFragment extends Fragment {
             final Container item = data.get(position);
             holder.imageView.setImageResource(R.drawable.icon_container);
             holder.title.setText(item.getName());
+            holder.subtitle.setText("Windows workspace  ·  ID " + item.id);
             holder.runButton.setOnClickListener((view) -> runContainer(item));
             holder.menuButton.setOnClickListener((view) -> showListItemMenu(view, item));
         }
