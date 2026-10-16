@@ -3,39 +3,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#08111F"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:clipToPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="22dp"
+        android:paddingBottom="28dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="WINHDR"
-            android:textColor="#55DDF5"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.18" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="WINHDR  /  GAMING ENVIRONMENT"
+                android:textColor="#55DDF5"
+                android:textSize="11sp"
+                android:letterSpacing="0.12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/winhdr_home_card"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="ARM64"
+                android:textColor="#55DDF5"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Your PC games. On Android."
+            android:layout_marginTop="18dp"
+            android:text="Your games.\nYour rules."
             android:textColor="#F4F8FF"
-            android:textSize="27sp"
+            android:textSize="34sp"
+            android:lineSpacingExtra="1dp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Manage containers, launch Windows games, and tune your setup."
-            android:textColor="#A7B6CB"
-            android:textSize="14sp" />
+            android:layout_marginTop="10dp"
+            android:text="A focused control center for your Windows game containers on Android."
+            android:textColor="#9FB2C9"
+            android:textSize="14sp"
+            android:lineSpacingExtra="3dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,19 +75,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="READY WHEN YOU ARE"
+                android:text="START HERE"
                 android:textColor="#55DDF5"
                 android:textSize="11sp"
+                android:letterSpacing="0.14"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Pick up where your setup begins."
+                android:layout_marginTop="9dp"
+                android:text="Your Windows workspace"
                 android:textColor="#F4F8FF"
-                android:textSize="20sp"
+                android:textSize="21sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Create or open a container to install and run compatible apps and games."
+                android:textColor="#9FB2C9"
+                android:textSize="13sp"
+                android:lineSpacingExtra="2dp" />
 
             <Button
                 android:id="@+id/btnHomeContainers"
@@ -68,8 +105,9 @@
                 android:layout_height="54dp"
                 android:layout_marginTop="18dp"
                 android:backgroundTint="#55DDF5"
-                android:text="OPEN CONTAINERS"
+                android:text="OPEN CONTAINERS   →"
                 android:textColor="#07111D"
+                android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -79,55 +117,57 @@
             android:layout_marginTop="28dp"
             android:text="QUICK ACCESS"
             android:textColor="#F4F8FF"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:letterSpacing="0.12"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btnHomeGames"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             android:layout_marginTop="12dp"
-            android:orientation="vertical">
+            android:backgroundTint="#102237"
+            android:gravity="start|center_vertical"
+            android:paddingStart="18dp"
+            android:text="🎮    GAME LIBRARY"
+            android:textColor="#F4F8FF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnHomeGames"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#14253A"
-                android:gravity="start|center_vertical"
-                android:paddingStart="18dp"
-                android:text="🎮   Game Library"
-                android:textColor="#F4F8FF" />
+        <Button
+            android:id="@+id/btnHomeControls"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#102237"
+            android:gravity="start|center_vertical"
+            android:paddingStart="18dp"
+            android:text="⌨    CONTROLS &amp; MAPPING"
+            android:textColor="#F4F8FF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnHomeControls"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#14253A"
-                android:gravity="start|center_vertical"
-                android:paddingStart="18dp"
-                android:text="⌨   Controls &amp; Mapping"
-                android:textColor="#F4F8FF" />
-
-            <Button
-                android:id="@+id/btnHomeSettings"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:backgroundTint="#14253A"
-                android:gravity="start|center_vertical"
-                android:paddingStart="18dp"
-                android:text="⚙   Performance &amp; Settings"
-                android:textColor="#F4F8FF" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnHomeSettings"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#102237"
+            android:gravity="start|center_vertical"
+            android:paddingStart="18dp"
+            android:text="⚙    PERFORMANCE &amp; SETTINGS"
+            android:textColor="#F4F8FF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="26dp"
             android:gravity="center"
             android:text="WINHDR  •  POWERED BY WINLATOR"
-            android:textColor="#63758D"
-            android:textSize="11sp" />
+            android:textColor="#60758D"
+            android:textSize="10sp"
+            android:letterSpacing="0.08" />
     </LinearLayout>
 </ScrollView>
