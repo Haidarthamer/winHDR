@@ -1,0 +1,114 @@
+name: Vendor Winlator app into WinHDR
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vendor-app.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout WinHDR repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Vendor the pinned app submodule and integrate native UI patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule update --init app
+          pinned="$(git -C app rev-parse HEAD)"
+          expected="a030f552f452158a2db64fdb32b490fa19c0b48d"
+          if [[ "$pinned" != "$expected" ]]; then
+            echo "Unexpected app submodule commit: $pinned (expected $expected)" >&2
+            exit 1
+          fi
+
+          tmp="$(mktemp -d)"
+          cp -a app/. "$tmp/"
+          git checkout -B vendor-app-independent
+
+          git rm --cached -f app
+          rm -rf app
+          mkdir app
+          cp -a "$tmp/." app/
+          rm -rf "$tmp"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path(".gitmodules")
+          if p.exists():
+              text = p.read_text()
+              lines = text.splitlines(keepends=True)
+              out = []
+              skip = False
+              for line in lines:
+                  if line.strip() == '[submodule "app"]':
+                      skip = True
+                      continue
+                  if skip and line.lstrip().startswith("[submodule "):
+                      skip = False
+                  if not skip:
+                      out.append(line)
+              result = "".join(out).strip() + "\n"
+              if result.strip():
+                  p.write_text(result)
+              else:
+                  p.unlink()
+          PY
+
+          patch="arena-native-ui/WinHDR-native-android-ui.patch"
+          if [[ -f "$patch" ]]; then
+            if (cd app && git apply --check "../$patch"); then
+              (cd app && git apply "../$patch")
+              echo "Native UI patch applied successfully."
+            else
+              echo "::warning::Native UI patch did not apply cleanly; vendoring will continue and the patch will be preserved for manual resolution."
+            fi
+          else
+            echo "::warning::Native UI patch file was not found; vendoring will continue without UI integration."
+          fi
+
+          if git ls-files --stage app | grep -q '^160000 '; then
+            echo "ERROR: app is still indexed as a submodule." >&2
+            exit 1
+          fi
+          git add -A .gitmodules app
+          git commit -m "Vendor Winlator app source and integrate WinHDR native UI"
+          git push origin HEAD:vendor-app-independent
+
+      - name: Verify normal tracked files
+        run: |
+          git fetch origin vendor-app-independent
+          git ls-tree origin/vendor-app-independent app
+          if git ls-tree origin/vendor-app-independent app | grep -q 'commit '; then
+            echo "ERROR: app is still a submodule." >&2
+            exit 1
+          fi
+          echo "app is tracked as a normal directory."
+
+      - name: Build Android debug APK
+        id: build
+        continue-on-error: true
+        working-directory: app
+        run: |
+          if [[ -x ./gradlew ]]; then
+            ./gradlew --no-daemon assembleDebug
+          else
+            echo "No Gradle wrapper found in app/" >&2
+            exit 1
+          fi
+
+      - name: Report build status
+        if: always()
+        run: |
+          echo "The vendored source branch is vendor-app-independent."
+          echo "Check this workflow's Build Android debug APK step for actual build status."
