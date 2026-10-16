@@ -1,0 +1,167 @@
+name: Vendor Winlator app into WinHDR
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vendor-app.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout WinHDR repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Vendor pinned app source and integrate native UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp arena-native-ui/WinHDR-native-android-ui.patch /tmp/WinHDR-native-android-ui.patch
+          git submodule update --init app
+          expected="a030f552f452158a2db64fdb32b490fa19c0b48d"
+          git -C app fetch --quiet origin "$expected"
+          git -C app checkout --detach "$expected"
+          pinned="$(git -C app rev-parse HEAD)"
+          test "$pinned" = "$expected"
+
+          tmp="$(mktemp -d)"
+          cp -a app/. "$tmp/"
+          rm -rf "$tmp/.git"
+          git checkout -B vendor-app-independent
+          git rm --cached -f -r app
+          rm -rf app
+          mkdir app
+          cp -a "$tmp/." app/
+          rm -rf "$tmp"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path(".gitmodules")
+          if p.exists():
+              lines = p.read_text().splitlines(keepends=True)
+              out, skip = [], False
+              for line in lines:
+                  if line.strip() == '[submodule "app"]':
+                      skip = True
+                      continue
+                  if skip and line.lstrip().startswith("[submodule "):
+                      skip = False
+                  if not skip:
+                      out.append(line)
+              result = "".join(out).strip()
+              if result:
+                  p.write_text(result + "\n")
+              else:
+                  p.unlink()
+
+          patch = Path("/tmp/WinHDR-native-android-ui.patch").read_text()
+          for section in patch.split("diff --git ")[1:]:
+              lines = section.splitlines()
+              if "new file mode" not in section:
+                  continue
+              dest = next((line for line in lines if line.startswith("+++ b/")), None)
+              if not dest:
+                  raise SystemExit("Missing destination path in UI patch")
+              target = Path("app") / dest[len("+++ b/"):]
+              target.parent.mkdir(parents=True, exist_ok=True)
+              added, in_hunk = [], False
+              for line in lines:
+                  if line.startswith("@@"):
+                      in_hunk = True
+                  elif in_hunk and line.startswith("+") and not line.startswith("+++"):
+                      added.append(line[1:])
+              target.write_text("\n".join(added) + "\n")
+
+          main = Path("app/src/main/java/com/winlator/MainActivity.java")
+          source = main.read_text()
+          old = "int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : (showShortcutsFirst ? R.id.menu_item_shortcuts : R.id.menu_item_containers);"
+          if "R.id.menu_item_home;" not in source:
+              if old not in source:
+                  raise SystemExit("Could not locate default navigation selection")
+              source = source.replace(old, "int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_home;", 1)
+          if "case R.id.menu_item_home:" not in source:
+              marker = "        switch (item.getItemId()) {"
+              if marker not in source:
+                  raise SystemExit("Could not locate navigation switch")
+              source = source.replace(marker, marker + "\n            case R.id.menu_item_home:\n                showFragment(new WinHDRHomeFragment());\n                break;", 1)
+          main.write_text(source)
+
+          menu = Path("app/src/main/res/menu/main_menu.xml")
+          menu_text = menu.read_text()
+          if "menu_item_home" not in menu_text:
+              marker = '    <group android:checkableBehavior="single">'
+              if marker not in menu_text:
+                  raise SystemExit("Could not locate navigation menu group")
+              menu_text = menu_text.replace(marker, marker + '\n        <item android:icon="@drawable/icon_container" android:id="@+id/menu_item_home" android:title="WinHDR Home" />', 1)
+          menu.write_text(menu_text)
+
+          styles = Path("app/src/main/res/values/styles.xml")
+          text = styles.read_text()
+          start = text.index('    <style name="AppThemeDark"')
+          end = text.index('    </style>', start) + len('    </style>')
+          dark = text[start:end]
+          for old, new in {
+              '<item name="colorAccent">#0288d1</item>': '<item name="colorAccent">#55DDF5</item>',
+              '<item name="colorPrimary">#505963</item>': '<item name="colorPrimary">#102237</item>',
+              '<item name="colorPrimaryDark">#3f474f</item>': '<item name="colorPrimaryDark">#08111F</item>',
+              '<item name="colorControlNormal">#616161</item>': '<item name="colorControlNormal">#55DDF5</item>',
+              '<item name="colorPrimarySurface">#1b1e21</item>': '<item name="colorPrimarySurface">#08111F</item>',
+          }.items():
+              dark = dark.replace(old, new)
+          text = text[:start] + dark + text[end:]
+          styles.write_text(text)
+
+          for rel in ["src/main/java/com/winlator/WinHDRHomeFragment.java",
+                      "src/main/res/layout/fragment_winhdr_home.xml",
+                      "src/main/res/drawable/winhdr_home_card.xml"]:
+              if not (Path("app") / rel).is_file():
+                  raise SystemExit(f"Missing UI file: {rel}")
+          print("Native UI files and navigation integrated.")
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- app
+          if [ -f .gitmodules ]; then git add -u -- .gitmodules; fi
+          git commit -m "Vendor Winlator app source and integrate WinHDR native UI"
+          git push --force origin HEAD:vendor-app-independent
+
+      - name: Verify vendored source and UI
+        run: |
+          set -euo pipefail
+          git fetch origin vendor-app-independent
+          if git ls-tree origin/vendor-app-independent app | grep -q 'commit '; then
+            echo "ERROR: app is still a submodule." >&2
+            exit 1
+          fi
+          git show origin/vendor-app-independent:app/src/main/res/menu/main_menu.xml | grep -q 'menu_item_home'
+          git show origin/vendor-app-independent:app/src/main/java/com/winlator/WinHDRHomeFragment.java >/dev/null
+          echo "Vendored source and native UI verified."
+
+      - name: Build Android debug APK
+        run: |
+          set -euo pipefail
+          test -f ./gradlew
+          bash ./gradlew --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinHDR-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
