@@ -8,9 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="186dp"
+        android:layout_margin="5dp"
         android:clickable="true"
         android:focusable="true"
-        android:padding="16dp"
+        android:padding="12dp"
         android:layout_margin="2dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
@@ -26,7 +27,7 @@
             android:id="@+id/TVTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?attr/colorPrimaryVariant"
+            android:textColor="#F4F8FF"
             android:textStyle="bold"
             android:ellipsize="end"
             android:maxLines="1" />
@@ -36,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="?attr/colorSecondaryText"
+            android:textColor="#9FB2C9"
             android:maxLines="1" />
 
         <LinearLayout
