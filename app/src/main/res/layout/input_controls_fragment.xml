@@ -9,20 +9,43 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
         android:paddingTop="18dp"
-        android:paddingBottom="28dp">
+        android:paddingBottom="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile" />
+            android:text="INPUT STUDIO"
+            android:textColor="#55DDF5"
+            android:textSize="11sp"
+            android:letterSpacing="0.14"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
+            android:text="Controls &amp; mapping"
+            android:textColor="#F4F8FF"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:textColor="#9FB2C9"
+            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -38,17 +61,14 @@
                     style="@style/ListMenuButton"
                     android:id="@+id/BTAddProfile"
                     android:src="@drawable/icon_add" />
-
                 <ImageButton
                     style="@style/ListMenuButton"
                     android:id="@+id/BTEditProfile"
                     android:src="@drawable/icon_edit" />
-
                 <ImageButton
                     style="@style/ListMenuButton"
                     android:id="@+id/BTDuplicateProfile"
                     android:src="@drawable/icon_duplicate" />
-
                 <ImageButton
                     style="@style/ListMenuButton"
                     android:id="@+id/BTRemoveProfile"
@@ -57,47 +77,65 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cursor_speed"/>
-
-        <com.winlator.widget.SeekBar
-            android:id="@+id/SBCursorSpeed"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:suffix="%"
-            app:minValue="10"
-            app:maxValue="250" />
+            android:background="@drawable/winhdr_home_card"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/overlay_opacity"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="POINTER FEEL"
+                android:textColor="#55DDF5"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
 
-        <com.winlator.widget.SeekBar
-            android:id="@+id/SBOverlayOpacity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:suffix="%"
-            app:step="5"
-            app:minValue="10"
-            app:maxValue="100" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/cursor_speed"
+                android:textColor="#F4F8FF" />
 
-        <CheckBox
-            android:id="@+id/CBDisableMouseInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/disable_mouse_input"
-            android:layout_marginTop="8dp" />
+            <com.winlator.widget.SeekBar
+                android:id="@+id/SBCursorSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:suffix="%"
+                app:minValue="10"
+                app:maxValue="250" />
 
-        <View
-            style="@style/HorizontalLine"
-            android:layout_marginTop="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/overlay_opacity"
+                android:textColor="#F4F8FF" />
+
+            <com.winlator.widget.SeekBar
+                android:id="@+id/SBOverlayOpacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:suffix="%"
+                app:step="5"
+                app:minValue="10"
+                app:maxValue="100" />
+
+            <CheckBox
+                android:id="@+id/CBDisableMouseInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/disable_mouse_input"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
             android:orientation="horizontal">
 
             <Button
@@ -106,6 +144,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginEnd="6dp"
                 android:text="@string/import_profile" />
 
             <Button
@@ -114,17 +153,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="6dp"
                 android:text="@string/export_profile" />
         </LinearLayout>
-
-        <View style="@style/HorizontalLine" />
 
         <Button
             style="@style/ButtonPositive"
             android:id="@+id/BTControlsEditor"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
             android:text="@string/controls_editor" />
 
         <TextView
@@ -132,10 +170,13 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="@string/external_controllers"
-            android:textColor="?attr/colorPrimaryVariant"
-            android:layout_marginTop="8dp" />
+            android:textColor="#55DDF5"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp" />
 
-        <View style="@style/HorizontalLine" />
+        <View
+            style="@style/HorizontalLine"
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:id="@+id/LLExternalControllers"
@@ -146,9 +187,11 @@
         <TextView
             android:id="@+id/TVEmptyText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
             android:gravity="center"
             android:text="@string/no_items_to_display"
+            android:textColor="#9FB2C9"
             android:visibility="gone" />
     </LinearLayout>
 </ScrollView>
