@@ -155,7 +155,7 @@ public class WinHDRHomeFragment extends Fragment {
 
         Button launch = new Button(context);
         launch.setText(shortcut.file.isDirectory() ? "Open" : "Play  →");
-        launch.setTextAllCaps(false);
+        launch.setAllCaps(false);
         launch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
         launch.setTextColor(Color.WHITE);
         launch.setPadding(dp(4), 0, dp(4), 0);
