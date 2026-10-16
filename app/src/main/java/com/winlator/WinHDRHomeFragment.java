@@ -167,9 +167,9 @@ public class WinHDRHomeFragment extends Fragment {
         launchParams.topMargin = dp(4);
         card.addView(launch, launchParams);
 
-        View.OnClickListener openListener = v -> launchShortcut(shortcut);
-        card.setOnClickListener(openListener);
-        launch.setOnClickListener(openListener);
+        card.setOnClickListener(v -> ((MainActivity) requireActivity()).showFragment(
+                new ShortcutDetailsFragment(shortcut.container.id, shortcut.file.getPath())));
+        launch.setOnClickListener(v -> launchShortcut(shortcut));
         return card;
     }
 
